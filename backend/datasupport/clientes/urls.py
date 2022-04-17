@@ -3,7 +3,9 @@ from clientes import views
 from django.urls import path
   
 urlpatterns = [
-      path('', views.ClienteOverview, name='home'),
-      path('añadir/', views.añadir_cliente, name='add-items'),
-      path('listar/', views.listar_clientes, name='view_items'),
+      path('overview', views.ClienteOverview, name='home'),
+      path('create/', views.create, name='create_clientes'),
+      path('', views.list, name='list_clientes'),
+      path('update/<int:pk>/', views.update, name='update_clientes'),
+      path('delete/<int:pk>/', views.delete, name='delete_clientes'),
 ]
