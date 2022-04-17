@@ -4,44 +4,56 @@ from rest_framework import serializers
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from datasupport.utils import responses
 
 @api_view(['GET'])
 def ClienteOverview(request):
     clientes_urls = {
-        'Todos los clientes': '/',
-        'Buscar cliente por nombre': '/?nombre=nombre',
-        'Buscar cliente por id': '/id',
-        'Añadir cliente': '/añadir',
-        'Actualizar cliente': '/actualizar/id',
-        'Eliminar cliente': '/cliente/id/eliminar'
+        '[GET] Todos los clientes': '/',
+        '[GET] Buscar cliente por nombre': '/?nombre=nombre',
+        '[GET] Buscar cliente por id': '/?id=id',
+        '[POST] Añadir cliente': '/',
+        '[PATCH] Actualizar cliente': '/update/<int:pk>/',
+        '[DELETE] Eliminar cliente': '/delete/<int:pk>/'
     }
   
     return Response(clientes_urls)
 @api_view(['GET'])
-def listar_clientes(request):
-    
-    # checking for the parameters from the URL
-    if request.query_params:
-        clientes = Cliente.objects.filter(**request.query_param.dict())
+def list(request):
+    if 'nombre' in request.query_params or 'id' in request.query_params and 'format' not in request.query_params:
+        clientes = Cliente.objects.filter(**request.query_params.dict())
     else:
         clientes = Cliente.objects.all()
-  
-    # if there is something in items else raise error
     if clientes:
         data = ClienteSerializer(clientes,many=True)
         return Response(data.data)
     else:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response(responses.not_found,status=status.HTTP_404_NOT_FOUND)
 @api_view(['POST'])
-def añadir_cliente(request):
+def create(request):
     cliente = ClienteSerializer(data=request.data)
-  
-    # validating for already existing data
-    if Cliente.objects.filter(**request.data).exists():
-        raise serializers.ValidationError('This data already exists')
-  
+
     if cliente.is_valid():
         cliente.save()
         return Response(cliente.data)
-    else:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+    return Response(cliente.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PATCH'])
+def update(request, pk):
+    cliente = Cliente.objects.filter(pk=pk)
+    if cliente.exists():
+        data = ClienteSerializer(instance=cliente, data=request.data)
+        if data.is_valid():
+            data.save()
+            return Response(data.data)
+        return Response(data.errors,status=status.HTTP_400_BAD_REQUEST)
+    return Response(responses.not_found,status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['DELETE'])
+def delete(request, pk):
+    cliente = Cliente.objects.filter(pk=pk)
+    if cliente.exists():
+        cliente.delete()
+        return Response(responses.eliminado)
+    return Response(responses.not_found, status=status.HTTP_404_NOT_FOUND)
+    
