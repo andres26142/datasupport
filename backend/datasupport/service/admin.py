@@ -1,7 +1,6 @@
 from django.contrib import admin
-from service.models import Contract, Servicio
+from service.models import ServicioPrestado, Servicio
 
-admin.site.register(Contract)
+admin.site.register(ServicioPrestado)
 admin.site.register(Servicio)
-# Register your models here.
 

@@ -6,3 +6,11 @@ eliminado = {
     "status":200,
     "mensaje":"Objeto eliminado satisfactoriamente"
 }
+creado={
+    "status":201,
+    "mensaje":"Objeto creado satisfactoriamente"
+}
+actualizado={
+    "status":200,
+    "mensaje":"Objeto actualizado satisfactoriamente"
+}
