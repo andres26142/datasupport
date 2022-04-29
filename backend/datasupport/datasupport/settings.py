@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'drf_yasg',
     'persona.apps.PersonaConfig',
     'seguridad.apps.SeguridadConfig',
-    'service.apps.ServiceConfig'
+    'service.apps.ServiceConfig',
+    'corsheaders'
 ]
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -53,6 +54,10 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     )
 }
+CORS_ORIGIN_WHITELIST = (
+    'localhost:3000',
+    'datasupport.site'
+)
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=9999),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
