@@ -7,12 +7,6 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token = super().get_token(user)
 
         if user.is_staff:
-            error={
-                "status": 400,
-                "mensaje": "Staff not allowed"
-            }
-                 
-            raise ValidationError(error,code=400)
-        
-
+            token['is_staff'] = user.is_staff
+        token['is_staff'] = user.is_staff
         return token

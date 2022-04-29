@@ -14,3 +14,7 @@ actualizado={
     "status":200,
     "mensaje":"Objeto actualizado satisfactoriamente"
 }
+no_actualizado={
+    "status":400,
+    "mensaje":"No se recibió data válida para esta petición"
+}

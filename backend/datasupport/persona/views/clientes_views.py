@@ -5,17 +5,18 @@ from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from datasupport.utils import responses
-
+from drf_yasg.utils import swagger_auto_schema
 
 @api_view(['GET'])
 def clienteOverview(request):
     clientes_urls = {
-        '[GET] Todos los clientes': 'clientes/',
-        '[GET] Buscar cliente por nombre': 'clientes/?nombre=nombre',
-        '[GET] Buscar cliente por id': 'clientes/?id=id',
-        '[POST] Añadir cliente': 'clientes/create/',
-        '[PATCH] Actualizar cliente': 'clientes/update/<int:pk>/',
-        '[DELETE] Eliminar cliente': 'clientes/delete/<int:pk>/'
+        '[GET] Todos los clientes': 'personas/clientes/',
+        '[GET] Buscar cliente por nombre': 'personas/clientes/?nombre=nombre',
+        '[GET] Buscar cliente por id': 'personas/clientes/?id=id',
+        '[POST] Añadir cliente': 'personas/clientes/create/',
+        '[PATCH] Actualizar cliente': 'personas/clientes/update/<int:pk>/',
+        '[PATCH] Activar cliente': 'personas/clientes/activate/<int:pk>/',
+        '[DELETE] Eliminar cliente': 'personas/clientes/delete/<int:pk>/'
     }
   
     return Response(clientes_urls)
@@ -32,6 +33,8 @@ def listCliente(request):
         return Response(data.data)
     else:
         return Response(responses.not_found,status=status.HTTP_404_NOT_FOUND)
+        
+@swagger_auto_schema(methods=['post'], request_body=ClienteSerializer)
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def crearCliente(request):
@@ -42,6 +45,7 @@ def crearCliente(request):
         return Response(responses.creado,status=status.HTTP_201_CREATED)
     return Response(cliente.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@swagger_auto_schema(methods=['patch'], request_body=ClienteSerializer)
 @api_view(['PATCH'])
 @permission_classes([IsAuthenticated])
 def updateCliente(request, pk):
@@ -49,11 +53,14 @@ def updateCliente(request, pk):
     if cliente.exists():
         serializer = ClienteSerializer(instance=cliente,data=request.data,partial=True)
         if serializer.is_valid():
-            serializer.update(instance=cliente.get(), validated_data=request.data)
-            return Response(responses.actualizado,status=status.HTTP_200_OK)
+            if len(serializer.validated_data)>0:
+                serializer.update(instance=cliente.get(), validated_data=request.data)
+                return Response(responses.actualizado,status=status.HTTP_200_OK)
+            return Response(responses.no_actualizado,status=status.HTTP_400_BAD_REQUEST)
         
     return Response(responses.not_found,status=status.HTTP_404_NOT_FOUND)
 
+@swagger_auto_schema(methods=['delete'], request_body=ClienteSerializer)
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
 def deleteCliente(request, pk):
@@ -67,6 +74,8 @@ def deleteCliente(request, pk):
             serializer.update(instance=cliente.get(), validated_data=json_delete)
             return Response(responses.eliminado,status=status.HTTP_200_OK)
     return Response(responses.not_found, status=status.HTTP_404_NOT_FOUND)
+
+@swagger_auto_schema(methods=['patch'], request_body=ClienteSerializer)
 @api_view(['PATCH'])
 @permission_classes([IsAuthenticated, IsAdminUser])
 def activateCliente(request, pk):
