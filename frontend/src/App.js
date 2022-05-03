@@ -1,9 +1,11 @@
-import React, { Component, useEffect } from 'react';
+import React, { Component } from 'react';
 import Nav from './components/Nav';
 import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
-import ListUsers from './components/ListUsers';
+import ListUsers from './components/ListUsers-old';
+import ListUsers2 from './components/ListUsers';
 import './App.css';
+
 
 let username=null;
 class App extends Component {
@@ -15,6 +17,13 @@ class App extends Component {
       username: '',
       error: ''
     };
+    this.handler = this.handler.bind(this)
+  }
+
+  handler() {
+    this.setState({
+      logged_in: false
+    })
   }
 
 
@@ -74,6 +83,7 @@ class App extends Component {
 
   handle_logout = () => {
     localStorage.removeItem('access');
+    localStorage.removeItem('refresh');
     this.setState({ logged_in: false, username: '' });
   };
 
@@ -87,9 +97,6 @@ class App extends Component {
     let form;
     let listUsers;
 
-    if(this.state.logged_in){
-      listUsers=<ListUsers></ListUsers>
-    }
     switch (this.state.displayed_form) {
       case 'login':
         form = <LoginForm handle_login={this.handle_login} />;
@@ -117,8 +124,9 @@ class App extends Component {
             : 'Please Log In'}
             
         </h3>
+          
         
-        {listUsers}
+        {this.state.logged_in ? <ListUsers2 handler = {this.handler}></ListUsers2> : null} 
         
       </div>
     );

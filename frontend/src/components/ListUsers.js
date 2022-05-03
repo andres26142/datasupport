@@ -1,57 +1,66 @@
-import { objectOf } from "prop-types";
-import React, { useEffect, useState } from "react";
+import React, { Component } from "react";
 
-export default function ListUsers() {
-  const [users, setUsers] = useState([]);
-  const [table, setTAble] = useState("");
+let username = null;
+class ListUsers2 extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      users: null,
+    };
+  }
 
-  useEffect(() => {
-    let table;
+  render() {
+    const handleGetClients = (evt) => {
+      evt.preventDefault();
+      fetch("https://datasupport.site/api/personas/clientes/", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access")}`,
+        },
+      })
+        .then((res) => res.json())
+        .then((json) => {
+          if (json.code == "token_not_valid") {
+              this.props.handler();
+              localStorage.removeItem('access');
+              localStorage.removeItem('refresh');
+          } else {
+            this.setState({
+              users: json,
+            });
+          }
+        });
+    };
 
-    if (users.length != 0) {
-      setTAble();
-    } else {
-      table = "";
-    }
-  }, []);
-
-  const handleSubmit = (evt) => {
-    evt.preventDefault();
-    fetch("https://datasupport.site/api/personas/clientes/", {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("access")}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((json) => {
-        let data = Object.values(json);
-        setUsers(json);
-      });
-  };
-
-  return (
-    <div>
-      <h3>Listado de usuarios</h3>
-      <button onClick={handleSubmit}>Cargar usuarios</button>
-
-      <table>
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Cedula</th>
+    const test = (evt) => {
+      let users = this.state.users;
+      return users.map((item) => {
+        return (
+          <tr key={item.id}>
+            <td>{item.nombre}</td>
+            <td>{item.id}</td>
           </tr>
-        </thead>
-        <tbody>
-          {users.map((item) => {
-            return (
-              <tr key={item.id}>
-                <td>{item.nombre}</td>
-                <td>{item.id}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </div>
-  );
+        );
+      });
+    };
+
+    return (
+      <div>
+        <h3>Listado de usuarios2</h3>
+        <button onClick={handleGetClients}>Cargar usuarios</button>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Cedula</th>
+            </tr>
+          </thead>
+          <tbody>{this.state.users == null ? null : test()}</tbody>
+        </table>
+      </div>
+    );
+  }
 }
+
+export default ListUsers2;
