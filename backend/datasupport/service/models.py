@@ -7,6 +7,7 @@ class Servicio (models.Model):
     class Meta:
         verbose_name_plural="Servicios"
     nombre=models.CharField(max_length=250)
+    descripcion=models.CharField(max_length=250)
     estado=models.BooleanField()
 
 class ServicioPrestado(models.Model):
@@ -18,4 +19,5 @@ class ServicioPrestado(models.Model):
     cliente = models.ForeignKey(Cliente, on_delete=models.DO_NOTHING, related_name='cliente_fk')
     especialista = models.ForeignKey(Especialista, on_delete=models.DO_NOTHING, related_name='especialista_fk')
     horas = models.CharField(max_length=3,null=True)
+    descripcion=models.CharField(max_length=250)
     fecha=models.DateField(null=True)
