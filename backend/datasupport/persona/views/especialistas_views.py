@@ -51,7 +51,7 @@ def crearEspecialista(request):
 def updateEspecialista(request, pk):
     especialista = Especialista.objects.filter(pk=pk,estado=True)
     if especialista.exists():
-        serializer = EspecialistaSerializer(instance=especialista,data=request.data,partial=True)
+        serializer = EspecialistaSerializer(instance=especialista.get(),data=request.data,partial=True)
         if serializer.is_valid():
             if len(serializer.validated_data)>0:
                 serializer.update(instance=especialista.get(), validated_data=request.data)

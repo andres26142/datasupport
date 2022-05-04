@@ -51,7 +51,7 @@ def crearServicio(request):
 def updateServicio(request, pk):
     servicios = Servicio.objects.filter(pk=pk,estado=True)
     if servicios.exists():
-        serializer = ServicioSerializer(instance=servicios,data=request.data,partial=True)
+        serializer = ServicioSerializer(instance=servicios.get(),data=request.data,partial=True)
         if serializer.is_valid():
             if len(serializer.validated_data)>0:
                 serializer.update(instance=servicios.get(), validated_data=request.data)

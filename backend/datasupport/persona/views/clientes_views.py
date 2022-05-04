@@ -51,7 +51,7 @@ def crearCliente(request):
 def updateCliente(request, pk):
     cliente = Cliente.objects.filter(pk=pk,estado=True)
     if cliente.exists():
-        serializer = ClienteSerializer(instance=cliente,data=request.data,partial=True)
+        serializer = ClienteSerializer(instance=cliente.get(),data=request.data,partial=True)
         if serializer.is_valid():
             if len(serializer.validated_data)>0:
                 serializer.update(instance=cliente.get(), validated_data=request.data)
