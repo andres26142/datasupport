@@ -18,3 +18,7 @@ no_actualizado={
     "status":400,
     "mensaje":"No se recibió data válida para esta petición"
 }
+error_parametros={
+    "status":400,
+    "mensaje":"Error con los parametros de consulta"
+}

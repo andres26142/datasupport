@@ -8,7 +8,7 @@ class Servicio (models.Model):
         verbose_name_plural="Servicios"
     nombre=models.CharField(max_length=250)
     descripcion=models.CharField(max_length=250)
-    estado=models.BooleanField()
+    estado=models.BooleanField(default=True)
 
 class ServicioPrestado(models.Model):
     def __str__(self) -> str:
@@ -18,6 +18,6 @@ class ServicioPrestado(models.Model):
     servicio = models.ForeignKey(Servicio, on_delete=models.DO_NOTHING, related_name='servicio_fk')
     cliente = models.ForeignKey(Cliente, on_delete=models.DO_NOTHING, related_name='cliente_fk')
     especialista = models.ForeignKey(Especialista, on_delete=models.DO_NOTHING, related_name='especialista_fk')
-    horas = models.CharField(max_length=3,null=True)
+    horas = models.CharField(max_length=3)
     descripcion=models.CharField(max_length=250)
-    fecha=models.DateField(null=True)
+    fecha=models.DateField()

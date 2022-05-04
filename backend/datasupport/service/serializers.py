@@ -6,6 +6,10 @@ class ServicioSerializer(serializers.ModelSerializer):
         model = Servicio
         exclude=['estado']
 class ServicioPrestadoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ServicioPrestado
+        fields='__all__'
+class ServicioPrestadoSerializerListar(serializers.ModelSerializer):
     cliente=ClienteSerializer()
     especialista=EspecialistaSerializer()  
     class Meta:
