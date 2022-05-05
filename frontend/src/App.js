@@ -1,3 +1,108 @@
+import React, {Fragment, useState, useEffect, setUsers} from 'react';
+import Navbar from './Components/Navbar';
+import Clientes from './Components/Clientes';
+import Especialistas from './Components/Especialistas';
+import Servicios from './Components/Servicios';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+
+function App() {
+
+  //Para actualizar Cliente 
+  const [cliente, setCliente] = useState({ 
+    cedula_ciudadania: "",
+    nombre: ""
+  })
+
+  //Para actualizar Especialista
+  const [especialista, setEspecialista] = useState({ 
+    cedula_ciudadania: "",
+    nombre: "",
+    area: ""
+  })
+
+  //Para actualizar Servicio
+    const [servicio, setServicio] = useState({ 
+      nombre: "",
+      descripcion: ""
+    })
+
+  // Estado de cada uno
+  const [clientes, setClientes] = useState([])
+  const [especialistas, setEspecialistas] = useState([])
+  const [servicios, setServicios] = useState([])
+
+  const [ClientesUpdated, setClientesUpdated] = useState(false)
+  const [EspecialistasUpdated, setEspecialistasUpdated] = useState(false)
+  const [ServiciosUpdated, setServiciosUpdated] = useState(false)
+
+  // Clientes GET
+  useEffect(() => {
+    const getClientes = () => {
+      fetch("https://datasupport.site/api/personas/clientes/", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access")}`,
+        },
+      })
+      .then(res => res.json())
+      .then(res => setClientes(res))
+    }
+    getClientes()
+    setClientesUpdated(false)
+  }, [ClientesUpdated])
+
+  // Especialistas GET
+  useEffect(() => {
+    const getEspecialistas = () => {
+      fetch("https://datasupport.site/api/personas/especialistas/", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access")}`,
+        },
+      })
+      .then(res => res.json())
+      .then(res => setEspecialistas(res))
+    }
+    getEspecialistas()
+    setEspecialistasUpdated(false)
+  }, [EspecialistasUpdated])
+
+  // Servicios GET
+  useEffect(() => {
+    const getServicios = () => {
+      fetch("https://datasupport.site/api/servicios/", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access")}`,
+        },
+      })
+      .then(res => res.json())
+      .then(res => setServicios(res))
+    }
+    getServicios()
+    setServiciosUpdated(false)
+  }, [ServiciosUpdated])
+
+  
+  return (
+    <div className="App">
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Navbar/>}>
+            <Route path="Clientes" element={<Clientes clientes={clientes} cliente={cliente} setCliente={setCliente} setClientesUpdated={setClientesUpdated}/>} />
+            <Route path="Especialistas" element={<Especialistas especialistas={especialistas} especialista={especialista} setEspecialista={setEspecialista} setEspecialistasUpdated={setEspecialistasUpdated}/>} />
+            <Route path="Servicios" element={<Servicios servicios={servicios} servicio={servicio} setServicio={setServicio} setServiciosUpdated={setServiciosUpdated}/>} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </div>
+  );
+}
+
+export default App;
+
+/*
 import React, { Component } from 'react';
 import Nav from './components/Nav';
 import LoginForm from './components/LoginForm';
@@ -134,3 +239,5 @@ class App extends Component {
 }
 
 export default App;
+
+*/
