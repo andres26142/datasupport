@@ -2,7 +2,8 @@ import React from 'react';
 
 const Form = ({cliente, setCliente}) => {
 
-    const handleChange = e => {
+    const handleChange = (e) => {
+        e.preventDefault();
         setCliente({
             ...cliente,
             [e.target.name]: e.target.value
@@ -12,6 +13,7 @@ const Form = ({cliente, setCliente}) => {
     let {cedula_ciudadania, nombre} = cliente
     const handleSubmit = () => {
         //Validacion de datos
+        
         if (cedula_ciudadania === "" || nombre === "") {
             alert('Todos los campos son obligatorios...')
             return
