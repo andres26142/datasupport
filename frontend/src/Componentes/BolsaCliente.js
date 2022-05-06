@@ -2,11 +2,7 @@ import React, { Component } from 'react';
 import FormBolsaCliente from './FormBolsaCliente';
 
 const BolsaCliente = ({setserviciosPrestados, clientes, especialistas, servicios, serviciosPrestados, servicioPrestado, setservicioPrestado, BolsasCliente, setBolsasCliente, setBolsaClienteUpdated, BolsaxCliente, setBolsaxCliente}) => {
-    console.log(serviciosPrestados)
-
-    const handler =()=>{
-        
-    }
+    
     return (
         <div className="container">
             <div className="row">

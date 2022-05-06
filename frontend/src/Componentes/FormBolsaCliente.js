@@ -11,7 +11,8 @@ const FormBolsaCliente = ({
     BolsaxCliente,
     setBolsaxCliente,
     setBolsaClienteUpdated,
-    setserviciosPrestados
+    setserviciosPrestados,
+    getServiciosPrestados
 }) => {
     const handleChange = (e) => {
         e.preventDefault();
@@ -31,7 +32,7 @@ const FormBolsaCliente = ({
         }
 
         //consulta
-        fetch("https://datasupport.site/api/servicios/tecnico/listar/?fecha_inicio="+fecha_inicio+"&fecha_final="+fecha_final+"&cliente="+cliente, { // ?fecha_inicio=2022-05-03&fecha_final=2022-05-07&cliente=38
+        fetch("https://datasupport.site/api/servicios/tecnico/listar/?fecha_inicio=" + fecha_inicio + "&fecha_final=" + fecha_final + "&cliente=" + cliente, { // ?fecha_inicio=2022-05-03&fecha_final=2022-05-07&cliente=38
             method: "GET",
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("access")}`,
@@ -39,77 +40,78 @@ const FormBolsaCliente = ({
             }
         })
             .then((res) => {
-                console.log(fecha_final);
-                setserviciosPrestados(res)
+                
                 return res.json();
             })
-            .then((res) => console.log(res))
-        setBolsaClienteUpdated(true)
-        
+            .then((res) => setserviciosPrestados(res));
+   
+    getServiciosPrestados();
+    setBolsaClienteUpdated(true)
 
-        setBolsaxCliente({
-            cliente: 0,
-            fecha_inicio: "",
-            fecha_inicio: "",
-        })
-    
-    }
 
-    return (
-        <form onSubmit={handleSubmit}>
-            <div className="mb-4">
-                <label htmlFor="clientes" className="form-label">
-                    Cliente:
-                </label>
-                <select
-                    onChange={handleChange}
-                    name="cliente"
-                    id="clientes"
-                    className="form-control"
-                >
-                    <option value="0">Seleccione Cliente</option>
-                    {clientes.map((cliente) => {
-                        return (
-                            <option key={cliente.id} value={cliente.id}>
-                                {cliente.nombre}
-                            </option>
-                        );
-                    })}
-                </select>
-            </div>
-            <div className="mb-2">
-                <label htmlFor="fechaInicio" className="form-label">
-                    Fecha Inicio:
-                </label>
-                <input
-                    name="fecha_inicio"
-                    type="text"
-                    onChange={handleChange}
-                    placeholder="FORMATO YYYY-MM-DD"
-                    className="form-control"
-                ></input>
-            </div>
-            <div className="mb-2">
-                <label htmlFor="fechaFin" className="form-label">
-                    Fecha Fin:
-                </label>
-                <input
-                    name="fecha_final"
-                    type="text"
-                    onChange={handleChange}
-                    placeholder="FORMATO YYYY-MM-DD"
-                    className="form-control"
-                ></input>
-            </div>
-            <div className="mb-3">
-                <button
-                    className="btn btn-danger"
-                >
-                    Buscar
-                </button>
-            </div>
-        </form>
-    );
+    setBolsaxCliente({
+        cliente: 0,
+        fecha_inicio: "",
+        fecha_inicio: "",
+    })
+
+}
+
+return (
+    <form onSubmit={handleSubmit}>
+        <div className="mb-4">
+            <label htmlFor="clientes" className="form-label">
+                Cliente:
+            </label>
+            <select
+                onChange={handleChange}
+                name="cliente"
+                id="clientes"
+                className="form-control"
+            >
+                <option value="0">Seleccione Cliente</option>
+                {clientes.map((cliente) => {
+                    return (
+                        <option key={cliente.id} value={cliente.id}>
+                            {cliente.nombre}
+                        </option>
+                    );
+                })}
+            </select>
+        </div>
+        <div className="mb-2">
+            <label htmlFor="fechaInicio" className="form-label">
+                Fecha Inicio:
+            </label>
+            <input
+                name="fecha_inicio"
+                type="text"
+                onChange={handleChange}
+                placeholder="FORMATO YYYY-MM-DD"
+                className="form-control"
+            ></input>
+        </div>
+        <div className="mb-2">
+            <label htmlFor="fechaFin" className="form-label">
+                Fecha Fin:
+            </label>
+            <input
+                name="fecha_final"
+                type="text"
+                onChange={handleChange}
+                placeholder="FORMATO YYYY-MM-DD"
+                className="form-control"
+            ></input>
+        </div>
+        <div className="mb-3">
+            <button
+                className="btn btn-danger"
+            >
+                Buscar
+            </button>
+        </div>
+    </form>
+);
 }
 
 export default FormBolsaCliente;
