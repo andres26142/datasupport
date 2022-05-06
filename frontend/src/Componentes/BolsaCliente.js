@@ -4,7 +4,17 @@ import FormBolsaCliente from './FormBolsaCliente';
 const BolsaCliente = ({setserviciosPrestados, clientes, especialistas, servicios, serviciosPrestados, servicioPrestado, setservicioPrestado, BolsasCliente, setBolsasCliente, setBolsaClienteUpdated, BolsaxCliente, setBolsaxCliente}) => {
 
     let horasTotales = 0;
-    if(BolsasCliente.hasOwnProperty('status')){
+    if(servicios.hasOwnProperty('status') || clientes.hasOwnProperty('status') || especialistas.hasOwnProperty('status')){
+        return(
+            <div className='container'>
+        <div className="col-6">
+            <h2 style={{ textAlign: 'center' }}>Debe registrar primero clientes, especialistas y servicios para visualizar este modulo</h2>
+            
+        </div>
+        </div>);
+        
+    }
+    else if(BolsasCliente.hasOwnProperty('status')){
         return(
             <div className="container">
             <div className="row">
@@ -44,6 +54,7 @@ const BolsaCliente = ({setserviciosPrestados, clientes, especialistas, servicios
         </div>
         );
     }
+    else{
     return (
         <div className="container">
             <div className="row">
@@ -109,7 +120,7 @@ const BolsaCliente = ({setserviciosPrestados, clientes, especialistas, servicios
                 </div>
             </div>
         </div>
-    );
+    );}
 }
 
 export default BolsaCliente;
