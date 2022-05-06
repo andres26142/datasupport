@@ -23,7 +23,7 @@ def listServicioPrestado(request):
             return Response(responses.error_parametros,status=status.HTTP_400_BAD_REQUEST)
     else:
         try:
-            servicios_prestados = ServicioPrestado.objects.filter(**request.query_params.dict())
+            servicios_prestados = ServicioPrestado.objects.filter(**request.query_params.dict(),cliente__estado=True)
         except:
             return Response(responses.error_parametros,status=status.HTTP_400_BAD_REQUEST)
     if servicios_prestados:
