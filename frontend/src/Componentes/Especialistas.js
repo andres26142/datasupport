@@ -36,6 +36,16 @@ const Especialistas = ({especialistas, especialista, setEspecialista, setEspecia
 
       setEspecialistasUpdated(true)
     }
+    if(especialistas.hasOwnProperty('status')){
+      return(
+        <div className='container'>
+            <div className="col-5">
+            <h2 style = {{textAlign: 'center'}}>Formulario Especialista</h2>
+            <FormEspecialistas especialista={especialista} setEspecialista={setEspecialista}/>
+          </div>
+        </div>
+      );
+    }
     return (
         <div className="container">
         <div className="row">

@@ -39,6 +39,17 @@ const Clientes = ({clientes, cliente, setCliente, setClientesUpdated}) => {
 
       setClientesUpdated(true)
     }
+    if(clientes.hasOwnProperty('status')){
+      return(
+        <div className='container'>
+          <div className="col-5">
+            <h2 style = {{textAlign: 'center'}}>Formulario Cliente</h2>
+            <Form cliente={cliente} setCliente={setCliente}/>
+          </div>
+        </div>
+      );
+    }
+    else{
       return (
       <div className="container">
         <div className="row">
@@ -78,7 +89,7 @@ const Clientes = ({clientes, cliente, setCliente, setClientesUpdated}) => {
           </div>
         </div>
       </div>
-    );
+    );}
 }
 
 export default Clientes;

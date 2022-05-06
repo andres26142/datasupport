@@ -34,6 +34,17 @@ const Servicios = ({servicios, servicio, setServicio, setServiciosUpdated}) => {
 
       setServiciosUpdated(true)
     }
+    if (servicios.hasOwnProperty('status')){
+      return(
+        <div className='container'>
+          <div className="col-5">
+            <h2 style = {{textAlign: 'center'}}>Formulario Servicio</h2>
+            <FormServicio servicio={servicio} setServicio={setServicio}/>
+          </div>
+        </div>
+      );
+    }
+    else{
     return (
         <div className="container">
         <div className="row">
@@ -72,6 +83,6 @@ const Servicios = ({servicios, servicio, setServicio, setServiciosUpdated}) => {
           </div>
         </div>
       </div>
-    );
+    );}
 }
 export default Servicios;

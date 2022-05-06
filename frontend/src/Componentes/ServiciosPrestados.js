@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Form from './Form';
 import FormServiciosPrestados from './FormServiciosPrestados';
 
-const ServiciosPrestados = ({ serviciosPrestados, setserviciosPrestados, clientes, servicios, especialistas, servicioPrestado, setservicioPrestado, setserviciosPrestadosUpdated}) => {
+const ServiciosPrestados = ({ serviciosPrestados, setserviciosPrestados, clientes, servicios, especialistas, servicioPrestado, setservicioPrestado, setserviciosPrestadosUpdated }) => {
 
     const handleDelete = id => {
         const requestInit = {
@@ -11,7 +11,7 @@ const ServiciosPrestados = ({ serviciosPrestados, setserviciosPrestados, cliente
                 Authorization: `Bearer ${localStorage.getItem("access")}`,
             },
         }
-        fetch("https://datasupport.site/api/servicios/tecnico/eliminar/"+id, requestInit)
+        fetch("https://datasupport.site/api/servicios/tecnico/eliminar/" + id, requestInit)
             .then(res => res.text())
             .then(res => console.log(res))
 
@@ -19,29 +19,55 @@ const ServiciosPrestados = ({ serviciosPrestados, setserviciosPrestados, cliente
         setserviciosPrestadosUpdated(true)
     }
 
-    let {cliente, especialista, servicio, horas, descripcion, fecha} = servicioPrestado
+    let { cliente, especialista, servicio, horas, descripcion, fecha } = servicioPrestado
     const handleUpdate = id => {
         //Validacion de datos
 
-        if (horas === "" || descripcion === "" || fecha ==="") {
+        if (horas === "" || descripcion === "" || fecha === "") {
             alert('Todos los campos son obligatorios...')
             return
         }
 
         //consulta
-        fetch("https://datasupport.site/api/servicios/tecnico/actualizar/"+id, {
+        fetch("https://datasupport.site/api/servicios/tecnico/actualizar/" + id, {
             method: "PATCH",
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("access")}`,
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(servicioPrestado)     
+            body: JSON.stringify(servicioPrestado)
         })
             .then(res => res.json())
             .then(res => console.log(res))
-        
+
         setserviciosPrestadosUpdated(true)
     }
+    if(servicios.hasOwnProperty('status') || clientes.hasOwnProperty('status') || especialistas.hasOwnProperty('status')){
+        return(
+            <div className='container'>
+        <div className="col-6">
+            <h2 style={{ textAlign: 'center' }}>Debe registrar primero clientes, especialistas y servicios para visualizar este modulo</h2>
+            
+        </div>
+        </div>);
+        
+    }
+    else if (serviciosPrestados.hasOwnProperty('status')) {
+        return (
+        <div className='container'>
+        <div className="col-6">
+            <h2 style={{ textAlign: 'center' }}>Formulario Servicios Prestados</h2>
+            <FormServiciosPrestados
+                servicio clientes={clientes}
+                servicios={servicios}
+                especialistas={especialistas}
+                servicioPrestado={servicioPrestado}
+                setservicioPrestado={setservicioPrestado}
+            />
+        </div>
+        </div>);
+    }
+    else{
     return (
         <div className="container">
             <div className="row">
@@ -96,7 +122,7 @@ const ServiciosPrestados = ({ serviciosPrestados, setserviciosPrestados, cliente
                 </div>
             </div>
         </div>
-    );
+    );}
 }
 
 export default ServiciosPrestados;
