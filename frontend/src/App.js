@@ -8,6 +8,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ServiciosPrestados from "./Componentes/ServiciosPrestados";
 import BolsaCliente from "./Componentes/BolsaCliente";
 
+
 function App() {
   //Para actualizar Cliente
   const [cliente, setCliente] = useState({
@@ -38,17 +39,25 @@ function App() {
     fecha: "",
   });
 
+  //Para actualizar Bolsa x Horas
+  const [BolsaxCliente, setBolsaxCliente] = useState({
+    cliente: 0,
+    fecha_inicio: "",
+    fecha_final: "",
+  });
 
   // Estado de cada uno
   const [clientes, setClientes] = useState([]);
   const [especialistas, setEspecialistas] = useState([]);
   const [servicios, setServicios] = useState([]);
   const [serviciosPrestados, setserviciosPrestados] = useState([])
+  const [BolsasCliente, setBolsasCliente] = useState([])
 
   const [ClientesUpdated, setClientesUpdated] = useState(false);
   const [EspecialistasUpdated, setEspecialistasUpdated] = useState(false);
   const [ServiciosUpdated, setServiciosUpdated] = useState(false);
   const [serviciosPrestadosUpdated, setserviciosPrestadosUpdated] = useState(false);
+  const [BolsaClienteUpdated, setBolsaClienteUpdated] = useState(false);
 
   const [loggedIn, setLoggedIn] = useState(
     localStorage.getItem("access") ? true : false
@@ -196,8 +205,29 @@ function App() {
       };
       getServiciosPrestados();
       setserviciosPrestadosUpdated(false);
+
+      // GET BOLSA CLIENTE
+      const getBolsasCliente = () => {
+        console.log(loggedIn);
+        fetch("https://datasupport.site/api/servicios/tecnico/listar/", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access")}`,
+          },
+        })
+          .then((res) => {
+            if (res.status == "401") {
+              handle_logout();
+            }
+
+            return res.json();
+          })
+          .then((res) => setBolsasCliente(res));
+      };
+      getBolsasCliente();
+      setBolsaClienteUpdated(false);
     }
-  }, [ClientesUpdated, EspecialistasUpdated, ServiciosUpdated, serviciosPrestadosUpdated]);
+  }, [ClientesUpdated, EspecialistasUpdated, ServiciosUpdated, serviciosPrestadosUpdated, BolsaClienteUpdated]);
 
   /*
 
@@ -296,10 +326,22 @@ function App() {
                   />
                 }
               />
-                <Route
+              <Route
                 path="BolsaCliente"
                 element={
-                  <BolsaCliente/>
+                  <BolsaCliente
+                  clientes={clientes} 
+                  especialistas={especialistas}
+                  servicios={servicios}
+                  serviciosPrestados={serviciosPrestados}
+                  setserviciosPrestados={setserviciosPrestados}
+                  servicioPrestado={servicioPrestado}
+                  BolsasCliente={BolsasCliente}
+                  setBolsasCliente={setBolsasCliente}
+                  BolsaxCliente={BolsaxCliente}
+                  setBolsaxCliente={setBolsaxCliente}
+                  setBolsaClienteUpdated={setBolsaClienteUpdated}
+                />
                 }
               />
             </Route>
