@@ -6,6 +6,7 @@ import Servicios from "./Componentes/Servicios";
 import LoginForm from "./Componentes/LoginForm";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ServiciosPrestados from "./Componentes/ServiciosPrestados";
+import BolsaCliente from "./Componentes/BolsaCliente";
 
 function App() {
   //Para actualizar Cliente
@@ -27,6 +28,17 @@ function App() {
     descripcion: "",
   });
 
+  //Para actualizar ServicioPrestado
+  const [servicioPrestado, setservicioPrestado] = useState({
+    cliente: 0,
+    especialista: 0,
+    servicio: 0,
+    horas: "",
+    descripcion: "",
+    fecha: "",
+  });
+
+
   // Estado de cada uno
   const [clientes, setClientes] = useState([]);
   const [especialistas, setEspecialistas] = useState([]);
@@ -36,6 +48,7 @@ function App() {
   const [ClientesUpdated, setClientesUpdated] = useState(false);
   const [EspecialistasUpdated, setEspecialistasUpdated] = useState(false);
   const [ServiciosUpdated, setServiciosUpdated] = useState(false);
+  const [serviciosPrestadosUpdated, setserviciosPrestadosUpdated] = useState(false);
 
   const [loggedIn, setLoggedIn] = useState(
     localStorage.getItem("access") ? true : false
@@ -182,9 +195,9 @@ function App() {
           .then((res) => setserviciosPrestados(res));
       };
       getServiciosPrestados();
-      //setClientesUpdated(false);
+      setserviciosPrestadosUpdated(false);
     }
-  }, [ClientesUpdated, EspecialistasUpdated, ServiciosUpdated]);
+  }, [ClientesUpdated, EspecialistasUpdated, ServiciosUpdated, serviciosPrestadosUpdated]);
 
   /*
 
@@ -274,7 +287,19 @@ function App() {
                   <ServiciosPrestados
                     serviciosPrestados={serviciosPrestados}
                     setserviciosPrestados={setserviciosPrestados}
+                    clientes={clientes}
+                    servicios={servicios}
+                    especialistas={especialistas}
+                    servicioPrestado={servicioPrestado}
+                    setservicioPrestado={setservicioPrestado}
+                    setserviciosPrestadosUpdated={setserviciosPrestadosUpdated}
                   />
+                }
+              />
+                <Route
+                path="BolsaCliente"
+                element={
+                  <BolsaCliente/>
                 }
               />
             </Route>

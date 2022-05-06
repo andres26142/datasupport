@@ -37,7 +37,7 @@ const Servicios = ({servicios, servicio, setServicio, setServiciosUpdated}) => {
     return (
         <div className="container">
         <div className="row">
-          <div className="col-7">
+          <div className="col-sm">
             <table className="table">
               <thead>
                 <tr>

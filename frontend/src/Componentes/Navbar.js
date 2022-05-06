@@ -15,6 +15,7 @@ const NavbarPage = () => {
                             <Nav.Link as = {Link} to="/Especialistas">Especialistas</Nav.Link>
                             <Nav.Link as = {Link} to="/Servicios">Servicios</Nav.Link> 
                             <Nav.Link as = {Link} to="/ServiciosPrestados">ServiciosPrestados</Nav.Link>
+                            <Nav.Link as = {Link} to="/BolsaCliente">BolsaxCliente</Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
                 </Container>

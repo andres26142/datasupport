@@ -39,7 +39,7 @@ const Especialistas = ({especialistas, especialista, setEspecialista, setEspecia
     return (
         <div className="container">
         <div className="row">
-          <div className="col-7">
+          <div className="col-sm">
             <table className="table">
               <thead>
                 <tr>

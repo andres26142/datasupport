@@ -42,7 +42,7 @@ const Clientes = ({clientes, cliente, setCliente, setClientesUpdated}) => {
       return (
       <div className="container">
         <div className="row">
-          <div className="col-7">
+          <div className="col-sm">
             <table className="table">
               <thead>
                 <tr>
