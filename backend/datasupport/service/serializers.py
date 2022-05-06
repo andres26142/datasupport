@@ -9,6 +9,14 @@ class ServicioPrestadoSerializer(serializers.ModelSerializer):
     class Meta:
         model = ServicioPrestado
         fields='__all__'
+    def validate_cliente(self, attrs):
+        print(attrs)
+        if attrs.estado is False:
+            raise serializers.ValidationError({
+                'status':400,
+                "mensaje":"Este cliente no existe"
+            })
+        return super().validate(attrs)
 class ServicioPrestadoSerializerListar(serializers.ModelSerializer):
     cliente=ClienteSerializer()
     especialista=EspecialistaSerializer()  

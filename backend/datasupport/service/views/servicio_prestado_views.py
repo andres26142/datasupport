@@ -18,7 +18,7 @@ def listServicioPrestado(request):
             fecha_final=request.query_params['fecha_final']
             request.query_params.pop('fecha_inicio')
             request.query_params.pop('fecha_final')
-            servicios_prestados = ServicioPrestado.objects.filter(**request.query_params.dict(),fecha__gte=fecha_inicio,fecha__lte=fecha_final)
+            servicios_prestados = ServicioPrestado.objects.filter(**request.query_params.dict(),fecha__gte=fecha_inicio,fecha__lte=fecha_final,cliente__estado=True)
         else:
             return Response(responses.error_parametros,status=status.HTTP_400_BAD_REQUEST)
     else:
@@ -31,6 +31,35 @@ def listServicioPrestado(request):
         return Response(data.data)
     else:
         return Response(responses.not_found,status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def servicioPrestadoHorasTotales(request):
+    request.query_params._mutable=True
+    if 'cliente' in request.query_params:
+        if 'fecha_inicio' in request.query_params and 'fecha_final' in request.query_params:
+            fecha_inicio=request.query_params['fecha_inicio']
+            fecha_final=request.query_params['fecha_final']
+            request.query_params.pop('fecha_inicio')
+            request.query_params.pop('fecha_final')
+            servicios_prestados = ServicioPrestado.objects.filter(cliente=request.query_params['cliente'],fecha__gte=fecha_inicio,fecha__lte=fecha_final,cliente__estado=True)
+            if servicios_prestados:
+                horas=0
+                for i in range(len(servicios_prestados)):
+                    horas+=int(servicios_prestados[i].horas)
+                data = {
+                    "horas_totales":horas,
+                    "cliente_nombre":servicios_prestados[0].cliente.nombre,
+                    "cliente_cc":servicios_prestados[0].cliente.cedula_ciudadania,
+                    "fecha_inicio":fecha_inicio,
+                    "fecha_final":fecha_final
+                }
+                return Response(data)
+            else:
+                return Response(responses.not_found,status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response(responses.error_parametros,status=status.HTTP_400_BAD_REQUEST)
+    return Response(responses.error_parametros,status=status.HTTP_400_BAD_REQUEST)
 @swagger_auto_schema(methods=['post'], request_body=ServicioPrestadoSerializer)
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])

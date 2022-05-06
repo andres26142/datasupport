@@ -12,5 +12,6 @@ urlpatterns = [
       path('tecnico/listar/', servicio_prestado_views.listServicioPrestado, name='listar_servicios_prestados'),
       path('tecnico/eliminar/<int:pk>', servicio_prestado_views.deleteServicioPrestado, name='eliminar_servicios_prestados'),
       path('tecnico/actualizar/<int:pk>', servicio_prestado_views.updateServicioPrestado, name='actualizar_servicios_prestados'),
+      path('tecnico/horas-totales', servicio_prestado_views.servicioPrestadoHorasTotales, name='horas_servicios_prestados'),
 
 ]
