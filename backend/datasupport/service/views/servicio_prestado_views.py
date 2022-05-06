@@ -84,7 +84,7 @@ def updateServicioPrestado(request, pk):
         if len(serializer.validated_data)>0:
             serializer.save(instance=servicios, validated_data=request.data)
             return Response(responses.actualizado,status=status.HTTP_200_OK)
-        return Response(responses.no_actualizado,status=status.HTTP_400_BAD_REQUEST)
+    return Response(responses.no_actualizado,status=status.HTTP_400_BAD_REQUEST)
         
     
 
