@@ -19,7 +19,8 @@ class ServicioPrestadoSerializer(serializers.ModelSerializer):
         return super().validate(attrs)
 class ServicioPrestadoSerializerListar(serializers.ModelSerializer):
     cliente=ClienteSerializer()
-    especialista=EspecialistaSerializer()  
+    especialista=EspecialistaSerializer() 
+    servicio=ServicioSerializer() 
     class Meta:
         model = ServicioPrestado
         fields='__all__'
