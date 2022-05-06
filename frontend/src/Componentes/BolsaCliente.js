@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import FormBolsaCliente from './FormBolsaCliente';
 
 const BolsaCliente = ({setserviciosPrestados, clientes, especialistas, servicios, serviciosPrestados, servicioPrestado, setservicioPrestado, BolsasCliente, setBolsasCliente, setBolsaClienteUpdated, BolsaxCliente, setBolsaxCliente}) => {
+
+    let horasTotales = 0;
     if(BolsasCliente.hasOwnProperty('status')){
         return(
             <div className="container">
@@ -91,6 +93,19 @@ const BolsaCliente = ({setserviciosPrestados, clientes, especialistas, servicios
                             })}
                         </tbody>
                     </table>
+
+                    <div className="mb-2 col-3">
+                        <label htmlFor="horasTotales" className="form-label">
+                            Horas Totales:
+                        </label>
+                        <ul>
+                        {
+                            BolsasCliente.map(BolsalCliente => {
+                                horasTotales += parseInt(BolsalCliente.horas);
+                            })}
+                            <li>{horasTotales} HORAS</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
