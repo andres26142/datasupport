@@ -5,6 +5,7 @@ import Especialistas from "./Componentes/Especialistas";
 import Servicios from "./Componentes/Servicios";
 import LoginForm from "./Componentes/LoginForm";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import ServiciosPrestados from "./Componentes/ServiciosPrestados";
 
 function App() {
   //Para actualizar Cliente
@@ -30,6 +31,7 @@ function App() {
   const [clientes, setClientes] = useState([]);
   const [especialistas, setEspecialistas] = useState([]);
   const [servicios, setServicios] = useState([]);
+  const [serviciosPrestados, setserviciosPrestados] = useState([])
 
   const [ClientesUpdated, setClientesUpdated] = useState(false);
   const [EspecialistasUpdated, setEspecialistasUpdated] = useState(false);
@@ -159,6 +161,28 @@ function App() {
       };
       getServicios();
       setServiciosUpdated(false);
+
+      //GET SERVICIOS PRESTADOS
+
+      const getServiciosPrestados = () => {
+        console.log(loggedIn);
+        fetch("https://datasupport.site/api/servicios/tecnico/listar/", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access")}`,
+          },
+        })
+          .then((res) => {
+            if (res.status == "401") {
+              handle_logout();
+            }
+
+            return res.json();
+          })
+          .then((res) => setserviciosPrestados(res));
+      };
+      getServiciosPrestados();
+      //setClientesUpdated(false);
     }
   }, [ClientesUpdated, EspecialistasUpdated, ServiciosUpdated]);
 
@@ -241,6 +265,15 @@ function App() {
                     servicio={servicio}
                     setServicio={setServicio}
                     setServiciosUpdated={setServiciosUpdated}
+                  />
+                }
+              />
+               <Route
+                path="ServiciosPrestados"
+                element={
+                  <ServiciosPrestados
+                    serviciosPrestados={serviciosPrestados}
+                    setserviciosPrestados={setserviciosPrestados}
                   />
                 }
               />
