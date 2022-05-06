@@ -12,7 +12,8 @@ const FormBolsaCliente = ({
     setBolsaxCliente,
     setBolsaClienteUpdated,
     setserviciosPrestados,
-    getServiciosPrestados
+    getServiciosPrestados,
+    getBolsasCliente
 }) => {
     const handleChange = (e) => {
         e.preventDefault();
@@ -43,9 +44,9 @@ const FormBolsaCliente = ({
                 
                 return res.json();
             })
-            .then((res) => setserviciosPrestados(res));
+            .then((res) => setBolsasCliente(res));
    
-    getServiciosPrestados();
+    getBolsasCliente();
     setBolsaClienteUpdated(true)
 
 
