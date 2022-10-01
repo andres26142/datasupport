@@ -21,3 +21,4 @@ class ServicioPrestado(models.Model):
     horas = models.CharField(max_length=3)
     descripcion=models.CharField(max_length=250)
     fecha=models.DateField()
+    #AGREGO COMENTARIO
